@@ -1,18 +1,18 @@
+/**
+ * Drop Object
+ */
 function Drop () {
     PIXI.Sprite.call(this);
     this.allChars = [];
     this.size = Math.max((Math.floor(Math.random()*25)+10),Math.floor(Math.random()*60))
     this.cLength = (Math.random() * 300)+50;
     
-    this.createRain(this.size);
-    // console.log(this);
-    // console.log(Tools.rb())
+    this.createDropChar(this.size);
     this.state = State.getInstance();
-    // console.log(this.state.isMobile);
     if(Tools.rb(5)){
         
         // BG
-        let f = new PIXI.filters.BlurFilter(Tools.random(20),3,3);
+        let f = new PIXI.filters.BlurFilter(Tools.randomBetween(0,20),3,3);
         f.blendMode = PIXI.BLEND_MODES.HARD_LIGHT;
         f.autoFit = true;
         this.filters = [f];
@@ -30,28 +30,43 @@ function Drop () {
 }
 
 Drop.prototype = Object.create(PIXI.Sprite.prototype);
+
+/**
+ * update drop display
+ */
 Drop.prototype.update = function(){
     this.allChars.forEach((char)=>{
         char.update();
     })
 }
+/**
+ * 
+ * @returns {integer} the size, in character, of the current drop
+ */
 Drop.prototype.getSize = function(){
-        return this.size;
+    return this.size;
 }
+
+/**
+ * forceDelete
+ * force the drop to disappear
+ */
 Drop.prototype.forceDelete = function(){
     const me = this;
     for (let i = 0; i < me.allChars.length; i++) {
         const char = me.allChars[i]
         setTimeout(()=>{
             char.cycleLength = 0;
-            },(Tools.randomBetween(0,20)*i))
-            
+            },(Tools.randomBetween(0,20)*i))            
         
     }
 }
+/**
+ * 
+ * @param {Char} char the character to delete
+ */
 Drop.prototype.removeChar = function(char){
     
-    // console.log('removeChar', char);
     var index = this.allChars.indexOf(char);
     if (index > -1) {
         this.allChars.splice(index, 1);
@@ -59,11 +74,14 @@ Drop.prototype.removeChar = function(char){
     this.removeChild(char);
     char.destroy();
     if(this.allChars.length === 0 ){
-        // console.log('Drop Empty')
         this.parent.deleteDrop(this);
     }
 }
-Drop.prototype.createRain = function(nbChara = 1){
+/**
+ * 
+ * @param {integer} nbChara the number of charaters to the drop
+ */
+Drop.prototype.createDropChar = function(nbChara = 1){
     let state = State.getInstance();
     const me = this;
     for (let i = 0; i < nbChara; i++) {

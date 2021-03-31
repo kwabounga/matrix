@@ -1,3 +1,7 @@
+/**
+ * 
+ * @param {PIXI.Container} stage the instance of the PIXI stage
+ */
 function Matrix(stage) {
   PIXI.Sprite.call(this);
 
@@ -22,6 +26,10 @@ function Matrix(stage) {
 
 Matrix.prototype = Object.create(PIXI.Sprite.prototype);
 
+/**
+ * create the custom Filter from shader ( cf: index.html>shader element)
+ * @returns {PIXI.Filter} the special Glitch Filter
+ */
 Matrix.prototype.createGlitchEffect = function () {
   let shader = document.getElementById("shader").innerHTML;
   var glitchFilter = new PIXI.Filter(null, shader);
@@ -46,6 +54,9 @@ Matrix.prototype.createGlitchEffect = function () {
   return glitchFilter;
 };
 
+/**
+ * create a rain of drops
+ */
 Matrix.prototype.createRain = function () {
   let s = State.getInstance();
   let nbDrops = s.getNbDrop();
@@ -56,6 +67,9 @@ Matrix.prototype.createRain = function () {
   }
 };
 
+/**
+ * add a new drop in the matrix 
+ */
 Matrix.prototype.addDrop = function () {
     if(!this.state.isLooping)return;
   if (this.rain.length < this.state.getNbColumns()) {
@@ -68,26 +82,34 @@ Matrix.prototype.addDrop = function () {
   }
 };
 
+/**
+ * activate the click/touch event
+ */
 Matrix.prototype.activateEvents = function () {
   this.stage.interactive = true;
 };
-
-Matrix.prototype.desactivateEvents = function () {
+/**
+ * deactivate the click/touch event
+ */
+Matrix.prototype.deactivateEvents = function () {
   this.stage.interactive = false;
 };
-
+/**
+ * initialize the click/touch event
+ */
 Matrix.prototype.initEvents = function () {
     const me = this;
     this.stage.on((this.state.isMobile?"pointertap":"click"), () => {
-    console.log("NbDrop:", this.state.getNbDrop(true));
-    createjs.Sound.play("drop");
-    
+    createjs.Sound.play("drop");    
     this.deleteForce();
-    this.desactivateEvents();
+    this.deactivateEvents();
     setTimeout(()=>{me.addSentence(this.state.getRandomQuote());},1000)
   });
 };
-
+/**
+ * add a sentence in the matrix
+ * @param {object} quote the quote object {quote,author}
+ */
 Matrix.prototype.addSentence = function (quote) {
     let text = quote.quote + ' ' + quote.author;
   let sentence = new Sentence(text,quote.quote.length);
@@ -99,6 +121,10 @@ Matrix.prototype.addSentence = function (quote) {
   this.sentence = sentence;
 };
 
+/**
+ * remove the sentence and reactivate the rain
+ * @param {Sentence} sentence the sentence to delete
+ */
 Matrix.prototype.deleteSentence = function (sentence) {
   this.sentence = null;
   this.removeChild(sentence);
@@ -109,6 +135,11 @@ Matrix.prototype.deleteSentence = function (sentence) {
     this.state.isLooping = true;
   }, Tools.randomBetween(100, 1000));
 };
+
+/**
+ * delete the drop passed in params and reAdd one if isLooping
+ * @param {Drop} drop the drop to delete
+ */
 Matrix.prototype.deleteDrop = function (drop) {
   var index = this.rain.indexOf(drop);
   if (index > -1) {
@@ -121,12 +152,19 @@ Matrix.prototype.deleteDrop = function (drop) {
   }
 };
 
+/**
+ * delete all drops in the matrix
+ * and force no looping
+ */
 Matrix.prototype.deleteForce = function () {
     this.state.isLooping = false;
   for (let i = 0; i < this.rain.length; i++) {
     this.rain[i].forceDelete();
   }
 };
+/**
+ * update Matrix display
+ */
 Matrix.prototype.update = function () {
   const me = this;
   if (this.sentence) {
@@ -162,6 +200,9 @@ Matrix.prototype.update = function () {
     }, Math.random() * 500);
   }
 };
+/**
+ * update the params of the Glitch Effect with random values (r,v,b) positions and orientation
+ */
 Matrix.prototype.updateGlitch = function () {
   this.glitchFilter.uniforms.blue = new Float32Array([
     Tools.randomBetween(),

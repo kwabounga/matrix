@@ -1,16 +1,34 @@
-function Tools(){}
-Tools.prototype.log = function(msg){console.log(msg);}
+var Tools = Tools || {};
 
+/**
+ * return the real size of the current browser window
+ */
 Tools.availableSize = {
     width: _=> Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
     height: _=> Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
 }
-Tools.random = function(max=0, min = 0) {
-  return (Math.floor(Math.random()*max) + min);
-}
+/**
+ * randomBetween
+ * @param {integer} max 
+ * @param {integer} min 
+ * @returns a integer between min and max
+ */
+Tools.randomBetween = function(min=-40, max=40){
+    return (Math.random() * (max-min) + min);
+  }
+/**
+ * random boolean
+ * @param {integer} max 
+ * @returns boolean 
+ */
 Tools.rb = function(max=15) {
   return !(Math.floor(Math.random()*max) > max/3);
 }
+/**
+ * ajaxGet
+ * @param {string} url 
+ * @param {function} callback 
+ */
 Tools.ajaxGet = function(url, callback) {
     var req = new XMLHttpRequest();
     req.open("GET", url);
@@ -28,6 +46,10 @@ Tools.ajaxGet = function(url, callback) {
     });
     req.send(null);
   }
+  /**
+   * 
+   * @returns if client is on mobile or not
+   */
   Tools.isMobile = function(){
     console.log(navigator.userAgent)
     let rg = new RegExp(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari/ig)
@@ -35,6 +57,4 @@ Tools.ajaxGet = function(url, callback) {
     console.log(isMob)
     return isMob;
   }
-  Tools.randomBetween = function(min=-40, max=40){
-    return (Math.random() * (max-min) + min);
-  }
+  

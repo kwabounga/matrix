@@ -1,8 +1,13 @@
+/**
+ * Char Object
+ * @param {integer} cLength the length of the cycle before delete
+ * @param {integer|null} fps if not null the number between refresh character in ms
+ * @param {string|null} forcedChar if not null the Character forced to display
+ */
 function Char(cLength, fps = null, forcedChar = null) {
-  // this.dirty = true;
   this.fps = fps;
   this.currentCount = 0;
-  this.chara = forcedChar?forcedChar:this.setChar();
+  this.chara = forcedChar?forcedChar:this.getRandomChar();
   PIXI.extras.BitmapText.call(this, this.chara, {
     font: `${Char.SIZE}px matrix`,
     tint: "#ffffff".replace("#", "0x"),
@@ -12,7 +17,7 @@ function Char(cLength, fps = null, forcedChar = null) {
   this.state = State.getInstance();
 }
 Char.prototype = Object.create(PIXI.extras.BitmapText.prototype);
-
+// Char statics const
 Char.SIZE = 20;
 Char.ALL = [
   "a",
@@ -109,22 +114,26 @@ Char.ALL = [
   "Y",
   "Z",
 ];
-
-Char.prototype.setChar = function(){
-    this.chara =  this.getRandomChar();    
-      return this.chara;
-}
+/**
+ * 
+ * @returns a random Character
+ */
 Char.prototype.getRandomChar = function(){
     return Char.ALL[Math.floor(Math.random()*Char.ALL.length)];
 }
+/**
+ * 
+ * @param {hexadecimal color} tint set the color of the current Character
+ */
 Char.prototype.color = function(tint){
     this.dirty = true;
-    // this._font.tint = "#7cfc00".replace("#", "0x");
     this._font.tint = tint.replace("#", "0x");
-    
 }
-Char.prototype.update = function(){
-    
+
+/**
+ * character update display
+ */
+Char.prototype.update = function(){    
     this.cycle ++;
     if(this.cycle >= this.cycleLength){
       this.cycle = 0
@@ -141,11 +150,8 @@ Char.prototype.update = function(){
     this.currentCount ++;
     if(this.currentCount >= this.fps){
         this.currentCount = 0;
-        // console.log('update');
         this.dirty = true;
-        this.text = this.setChar();
-        
-        // console.log(this);
+        this.text = this.getRandomChar();
     }
     
 }
