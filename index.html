@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>matrix</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./assets/styles.css">
+        <link rel="shortcut icon" href="favicon.png" type="image/png">
+    </head>
+    <body onload="init();" onresize="refresh()">
+        
+        <div align="center">
+            <canvas id="game-canvas" width="Tools.availableSize.width()" height="Tools.availableSize.height()" style="visibility: hidden;"></canvas>
+          </div>
+          <script src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
+          <script src="./lib/pixi.js"></script>
+          <!-- <script src="https://cdn.jsdelivr.net/npm/pixi-filters@latest/dist/pixi-filters.js"></script> -->
+          <!-- <script src="./node_modules/pixi-filters/dist/pixi-filters.js"></script> -->
+          <script src="./exports/tools.js"></script>
+          <script src="./exports/Sentence.js"></script>
+        <script src="./exports/Drop.js"></script>
+        <script src="./exports/State.js"></script>
+        <script src="./exports/Char.js"></script>
+        <script src="./exports/Matrix.js"></script>
+        <script src="./exports/Main.js"></script>
+
+        <script id="shader" type="x-shader/x-fragment">
+
+            //precision mediump float;
+
+varying vec2 vTextureCoord;
+uniform sampler2D uSampler;
+
+uniform vec4 filterArea;
+uniform vec4 filterClamp;
+uniform vec2 dimensions;
+uniform float aspect;
+
+uniform sampler2D displacementMap;
+uniform float offset;
+uniform float sinDir;
+uniform float cosDir;
+uniform int fillMode;
+
+uniform float seed;
+uniform vec2 red;
+uniform vec2 green;
+uniform vec2 blue;
+
+const int TRANSPARENT = 0;
+const int ORIGINAL = 1;
+const int LOOP = 2;
+const int CLAMP = 3;
+const int MIRROR = 4;
+
+void main(void)
+{
+    vec2 coord = (vTextureCoord * filterArea.xy) / dimensions;
+
+    if (coord.x > 1.0 || coord.y > 1.0) {
+        return;
+    }
+
+    float cx = coord.x - 0.5;
+    float cy = (coord.y - 0.5) * aspect;
+    float ny = (-sinDir * cx + cosDir * cy) / aspect + 0.5;
+
+    // displacementMap: repeat
+    // ny = ny > 1.0 ? ny - 1.0 : (ny < 0.0 ? 1.0 + ny : ny);
+
+    // displacementMap: mirror
+    ny = ny > 1.0 ? 2.0 - ny : (ny < 0.0 ? -ny : ny);
+
+    vec4 dc = texture2D(displacementMap, vec2(0.5, ny));
+
+    float displacement = (dc.r - dc.g) * (offset / filterArea.x);
+
+    coord = vTextureCoord + vec2(cosDir * displacement, sinDir * displacement * aspect);
+
+    if (fillMode == CLAMP) {
+        coord = clamp(coord, filterClamp.xy, filterClamp.zw);
+    } else {
+        if( coord.x > filterClamp.z ) {
+            if (fillMode == TRANSPARENT) {
+                discard;
+            } else if (fillMode == LOOP) {
+                coord.x -= filterClamp.z;
+            } else if (fillMode == MIRROR) {
+                coord.x = filterClamp.z * 2.0 - coord.x;
+            }
+        } else if( coord.x < filterClamp.x ) {
+            if (fillMode == TRANSPARENT) {
+                discard;
+            } else if (fillMode == LOOP) {
+                coord.x += filterClamp.z;
+            } else if (fillMode == MIRROR) {
+                coord.x *= -filterClamp.z;
+            }
+        }
+
+        if( coord.y > filterClamp.w ) {
+            if (fillMode == TRANSPARENT) {
+                discard;
+            } else if (fillMode == LOOP) {
+                coord.y -= filterClamp.w;
+            } else if (fillMode == MIRROR) {
+                coord.y = filterClamp.w * 2.0 - coord.y;
+            }
+        } else if( coord.y < filterClamp.y ) {
+            if (fillMode == TRANSPARENT) {
+                discard;
+            } else if (fillMode == LOOP) {
+                coord.y += filterClamp.w;
+            } else if (fillMode == MIRROR) {
+                coord.y *= -filterClamp.w;
+            }
+        }
+    }
+
+    gl_FragColor.r = texture2D(uSampler, coord + red * (1.0 - seed * 0.4) / filterArea.xy).r;
+    gl_FragColor.g = texture2D(uSampler, coord + green * (1.0 - seed * 0.3) / filterArea.xy).g;
+    gl_FragColor.b = texture2D(uSampler, coord + blue * (1.0 - seed * 0.2) / filterArea.xy).b;
+    gl_FragColor.a = texture2D(uSampler, coord).a;
+}
+
+        </script>
+    <script>
+        function refresh() {
+            location.reload();
+        }
+        function init() {
+            let s = State.getInstance();
+            s.height = Tools.availableSize.height();
+            s.width = Tools.availableSize.width();
+            console.log('init',s.width,s.height);
+            loadSound();
+            Tools.ajaxGet("./data/quotes.json",(data)=>{
+                let d = JSON.parse(data).all
+                var main = new Main(d);
+            })
+        }
+        function loadSound () {            
+            createjs.Sound.registerSound("./assets/drop.wav", "drop");
+            createjs.Sound.registerSound("./assets/frap_1.wav", "frap_1");
+            createjs.Sound.registerSound("./assets/frap_2.wav", "frap_2");
+            createjs.Sound.registerSound("./assets/frap_3.wav", "frap_3");
+            createjs.Sound.registerSound("./assets/frap_4.wav", "frap_4");
+        }
+    </script>
+    </body>
+</html>
