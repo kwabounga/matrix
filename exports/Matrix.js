@@ -115,7 +115,7 @@ Matrix.prototype.addSentence = function (quote) {
   let sentence = new Sentence(text,quote.quote.length);
   sentence.x =
     Math.floor((this.state.getNbColumns() - text.length) / 2) * (Char.SIZE / 2);
-  sentence.y = (Math.floor(this.state.getNbRows() / 2)-1) * Char.SIZE;
+  sentence.y = (Math.floor(this.state.getNbRows() / 2)-1) * (Char.SIZE);
   this.addChild(sentence);
   console.log(sentence);
   this.sentence = sentence;

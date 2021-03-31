@@ -31,7 +31,7 @@ Sentence.prototype.createSentence = function(text, nbDropLeft = 5){
             const t = (outOfRange?null:text[i]);
             let c = new Char((350+(nbDropLeft*20)), (outOfRange?Math.floor(Math.random()*100):null), t);
             c.x = i * (Char.SIZE/2);
-            c.y = (-(Char.SIZE-5))
+            c.y = (-(Char.SIZE+5))
             me.addChild(c);
             me.allChars.push(c);
             createjs.Sound.play("frap_"+Math.ceil(Math.random()*4));
