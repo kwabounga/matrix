@@ -1,8 +1,8 @@
 # Personal Matrix Project
 
 create a Rain characters and display citations to the matrix on touch  
-[DEMO LIVE](https://kwabounga.fr/matrix/#ffa500)
-
+[DEMO LIVE https://kwabounga.fr/matrix/](https://kwabounga.fr/matrix/)  
+[EXTRA COLOR https://kwabounga.fr/matrix/**#ffa500**](https://kwabounga.fr/matrix/#ffa500)  
 ## Libraries:  
 
 ### PIXIJS version 4.5.1  

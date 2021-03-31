@@ -18,10 +18,10 @@ const State = (function () {
             "#7cfc00"
         ];
         let regEx = new RegExp(/^#[a-f0-9]{6}/);
-        if(regEx.test(window.location.hash)){
-            this.colors.push(window.location.hash);
+        if(regEx.test(window.location.hash.toLowerCase())){
+            this.colors.push(window.location.hash.toLowerCase());
         }
-        this.currentColor = (regEx.test(window.location.hash)?window.location.hash:"#7cfc00");
+        this.currentColor = (regEx.test(window.location.hash.toLowerCase())?window.location.hash.toLowerCase():"#7cfc00");
         /**
          * 
          * @param {boolean} logger [optional]
