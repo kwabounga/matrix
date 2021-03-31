@@ -1,7 +1,7 @@
 # Personal Matrix Project
 
-create a Rain characters and display citations to the matrix on touch
-
+create a Rain characters and display citations to the matrix on touch  
+[DEMO LIVE](https://kwabounga.fr/matrix/#ffa500)
 
 ## Libraries:  
 
