@@ -3,9 +3,10 @@
  * @param {string} text the text to display (quote + author)
  * @param {integer} limitQuote the position of the quote's end
  */
-function Sentence (text, limitQuote) {
+function Sentence (text, limitQuote,isCommand = false) {
     PIXI.Sprite.call(this);
     this.allChars = [];
+    this.isCommand = isCommand;
     let f = new PIXI.filters.NoiseFilter();
         f.blendMode = PIXI.BLEND_MODES.ADD;
         f.noise = 0.59;
@@ -13,7 +14,7 @@ function Sentence (text, limitQuote) {
         f.autoFit = true;
         this.filters = [f];
     this.limitQuote = limitQuote;
-    this.createSentence(text.toUpperCase())
+    this.createSentence(text.toUpperCase(),(isCommand?0:5))
 }
 Sentence.prototype = Object.create(PIXI.Sprite.prototype);
 
@@ -22,7 +23,7 @@ Sentence.prototype = Object.create(PIXI.Sprite.prototype);
  * @param {string} text the text to display
  * @param {integer} nbDropLeft the number of drops still present on the screen
  */
-Sentence.prototype.createSentence = function(text, nbDropLeft = 5){
+Sentence.prototype.createSentence = function(text, nbDropLeft = 5,isCommand = false){
     let state = State.getInstance();
     const me = this;
     for (let i = 0; i < text.length+1; i++) {
@@ -55,6 +56,7 @@ Sentence.prototype.update = function(){
  * @param {Char} char the character to delete
  */
 Sentence.prototype.removeChar = function(char){
+    console.log('this.removeChar')
     var index = this.allChars.indexOf(char);
     if (index > -1) {
         this.allChars.splice(index, 1);
@@ -62,6 +64,10 @@ Sentence.prototype.removeChar = function(char){
     this.removeChild(char);
     char.destroy();
     if(this.allChars.length === 0 ){
-        this.parent.deleteSentence(this);
+        if(this.isCommand){
+            this.parent.deleteCommand(this);
+        } else {
+            this.parent.deleteSentence(this);
+        }
     }
 }

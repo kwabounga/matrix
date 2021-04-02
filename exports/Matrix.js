@@ -4,10 +4,14 @@
  */
 function Matrix(stage) {
   PIXI.Sprite.call(this);
-
   this.stage = stage;
-  this.stage.addChild(this);
   this.state = State.getInstance();
+    
+  this.trameMap = new PIXI.Sprite(PIXI.Texture.fromImage("trame"));
+  this.trameMap.blendMode = PIXI.BLEND_MODES.MULTIPLY;
+
+  this.stage.addChild(this);
+  this.stage.addChild(this.trameMap);   
 
   this.rain = [];
   this.sentence = null;  
@@ -15,8 +19,7 @@ function Matrix(stage) {
   this.colorCount = 0;
   this.glitchCount = 0;
   this.glitchTrigger = 350;
-
-  this.glitchFilter = this.createGlitchEffect();
+  this.glitchFilter = this.createGlitchEffect(this.trameMap);
   this.filters = [this.glitchFilter];
 
   this.createRain();
@@ -30,9 +33,11 @@ Matrix.prototype = Object.create(PIXI.Sprite.prototype);
  * create the custom Filter from shader ( cf: index.html>shader element)
  * @returns {PIXI.Filter} the special Glitch Filter
  */
-Matrix.prototype.createGlitchEffect = function () {
+Matrix.prototype.createGlitchEffect = function (trameMap) {
   let shader = document.getElementById("shader").innerHTML;
   var glitchFilter = new PIXI.Filter(null, shader);
+  
+  glitchFilter.displacementMap = trameMap;
   glitchFilter.autoFit = true;
   glitchFilter.blendMode = PIXI.BLEND_MODES.HARD_LIGHT;
   glitchFilter.padding = 0;
@@ -50,7 +55,7 @@ Matrix.prototype.createGlitchEffect = function () {
   ]);
   glitchFilter.uniforms.seed = parseFloat("0.5");
   glitchFilter.uniforms.offset = 100;
-
+//   this.displacementFilter = new PIXI.filters.DisplacementFilter(displacementMap)
   return glitchFilter;
 };
 
@@ -100,11 +105,44 @@ Matrix.prototype.deactivateEvents = function () {
 Matrix.prototype.initEvents = function () {
     const me = this;
     this.stage.on((this.state.isMobile?"pointertap":"click"), () => {
-    createjs.Sound.play("drop");    
-    this.deleteForce();
-    this.deactivateEvents();
-    setTimeout(()=>{me.addSentence(this.state.getRandomQuote());},1000)
+    // createjs.Sound.play("drop");    
+    // this.deleteForce();
+    // this.deactivateEvents();
+    // setTimeout(()=>{me.addSentence(this.state.getRandomQuote());},1000)
+    this.actionTrigger(this.state.getRandomQuote());
   });
+};
+
+Matrix.prototype.actionTrigger = function (text) {
+  const me = this;
+  // this.stage.on((this.state.isMobile?"pointertap":"click"), () => {
+  createjs.Sound.play("drop");    
+  this.deleteForce();
+  this.deactivateEvents();
+  setTimeout(()=>{me.addSentence(text);},1000)
+// });
+};
+
+
+Matrix.prototype.addCommand = function (text) {
+  if(this.command){
+    this.removeChild(this.command);
+    this.command.destroy();
+    this.command= null
+  }
+  let com = text + ' ' + 'INFO';
+  let command = new Sentence(com,text.length,true);  
+  command.x = 5;
+  command.y = 25;
+  this.addChild(command);
+  console.log(command);
+  this.command = command
+};
+Matrix.prototype.deleteCommand = function (command) {
+  console.log('this.deleteCommand')
+  this.removeChild(command);
+  command.destroy();
+  this.command = null;
 };
 /**
  * add a sentence in the matrix
@@ -170,13 +208,18 @@ Matrix.prototype.update = function () {
   if (this.sentence) {
     this.sentence.update();
   }
+  if (this.command) {
+    this.command.update();
+  }
   for (let i = 0; i < this.rain.length; i++) {
     this.rain[i].update();
   }
   this.colorCount++;
   if (this.colorCount >= 500) {
     this.colorCount = 0;
-    this.state.getNewColor();
+    if(!this.state.isRandom){
+      this.state.getNewColor();
+    }
   }
   this.glitchCount++;
   if (this.glitchCount >= this.glitchTrigger) {

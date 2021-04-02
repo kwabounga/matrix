@@ -7,21 +7,24 @@ const State = (function () {
      */
     function createInstance() {
         // definition
+        this.customColor = "#dddddd";
         this.width = 800;
         this.height = 600;
         this.isMobile = Tools.isMobile();
+        this.isRandom = true;
         this.isLooping = true;
         this.allQuotes = [];
         this.colors = [
             "#ed0039",
-            "#1e00f7",
+            "#44b5ff",
             "#7cfc00"
         ];
-        let regEx = new RegExp(/^#[a-f0-9]{6}/);
-        if(regEx.test(window.location.hash.toLowerCase())){
-            this.colors.push(window.location.hash.toLowerCase());
+        let hashIsColor = new RegExp(/^#[a-f0-9]{6}/);
+        if(hashIsColor.test(window.location.hash.toLowerCase())){
+            this.customColor = window.location.hash.toLowerCase();
+            this.colors.push(this.customColor);
         }
-        this.currentColor = (regEx.test(window.location.hash.toLowerCase())?window.location.hash.toLowerCase():"#7cfc00");
+        this.currentColor = (hashIsColor.test(window.location.hash.toLowerCase())?window.location.hash.toLowerCase():"#7cfc00");
         /**
          * 
          * @param {boolean} logger [optional]
@@ -97,8 +100,10 @@ const State = (function () {
             height: this.height,
             colors: this.colors,
             isMobile: this.isMobile,
+            isRandom: this.isRandom,
             isLooping: this.isLooping,
             currentColor: this.currentColor,
+            customColor: this.customColor,
             allQuotes: this.allQuotes,
             getNewColor: getNewColor,
             getNbRows: getNbRows,

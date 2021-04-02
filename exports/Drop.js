@@ -4,7 +4,7 @@
 function Drop () {
     PIXI.Sprite.call(this);
     this.allChars = [];
-    this.size = Math.max((Math.floor(Math.random()*25)+10),Math.floor(Math.random()*60))
+    this.size = Math.max((Math.floor(Math.random()*20)+10),Math.floor(Math.random()*50))
     this.cLength = (Math.random() * 300)+50;
     
     this.createDropChar(this.size);
@@ -20,12 +20,12 @@ function Drop () {
         
     } else {
         // FG
-        let f = new PIXI.filters.NoiseFilter();
-        f.blendMode = PIXI.BLEND_MODES.ADD;
-        f.noise = 0.59;
-        f.seed = 0.33;
-        f.autoFit = true;
-        this.filters = [f];
+        // let f = new PIXI.filters.NoiseFilter();
+        // f.blendMode = PIXI.BLEND_MODES.ADD;
+        // f.noise = 0.59;
+        // f.seed = 0.33;
+        // f.autoFit = true;
+        // this.filters = [f];
     }
 }
 
