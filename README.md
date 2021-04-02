@@ -1,8 +1,8 @@
 # Personal Matrix Project
 
 create a Rain characters and display quotes to the matrix on touch  
-[DEMO LIVE https://kwabounga.fr/matrix/](https://kwabounga.fr/matrix/)  
-[EXTRA COLOR https://kwabounga.fr/matrix/**#ffa500**](https://kwabounga.fr/matrix/#ffa500)  
+[**DEMO LIVE** https://kwabounga.fr/matrix/](https://kwabounga.fr/matrix/)  
+[**EXTRA COLOR** https://kwabounga.fr/matrix/**#ffa500**](https://kwabounga.fr/matrix/#ffa500)  
 
 
 ### Controls:
@@ -10,8 +10,8 @@ create a Rain characters and display quotes to the matrix on touch
 Press **'r'** to set red color  
 Press **'v'** to set green color  
 Press **'b'** to set blue color  
-Press **'c'** to set custom color   
-cf: [extra color](#Personal-Matrix-Project)  
+Press **'c'** to set custom color  (cf: [extra color](#Personal-Matrix-Project))   
+
 Press **'space bar'** to toggle colors randomization  
 
 **click** or **touch** to display a random quote  
