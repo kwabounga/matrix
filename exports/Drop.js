@@ -86,8 +86,8 @@ Drop.prototype.createDropChar = function(nbChara = 1){
     const me = this;
     for (let i = 0; i < nbChara; i++) {
         setTimeout(()=>{
-            let r = Math.floor(Math.random()*200);
-            let c = new Char(me.cLength, (r<100)?r:null);
+            let r = Math.floor(Math.random()*200)+100;
+            let c = new Char(me.cLength, (r<200)?r:null);
             c.y = i * (Char.SIZE-5);
             
             me.addChild(c);

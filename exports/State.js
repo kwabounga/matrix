@@ -17,7 +17,7 @@ const State = (function () {
         this.colors = [
             "#ed0039",
             "#44b5ff",
-            "#7cfc00"
+            "#7cfc00",
         ];
         let hashIsColor = new RegExp(/^#[a-f0-9]{6}/);
         if(hashIsColor.test(window.location.hash.toLowerCase())){
@@ -87,6 +87,14 @@ const State = (function () {
         };
         /**
          * 
+         * @param {/^#[a-f0-9]{6}/} color 
+         */
+        function setCurrentColor(color){
+            this.currentColor = color;            
+            location.hash = this.currentColor;
+        }
+        /**
+         * 
          * @returns {hexadecimal color} change the current color and return it
          */
         function getNewColor(){
@@ -112,6 +120,7 @@ const State = (function () {
             getRandomY: getRandomY,
             getRandomQuote: getRandomQuote,
             getQuote: getQuote,
+            setCurrentColor: setCurrentColor,
         };
     }
     

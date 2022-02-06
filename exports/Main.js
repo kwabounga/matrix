@@ -81,22 +81,22 @@ Main.prototype.addKeysEvents = function () {
   this.keyRed.press = () => {
     console.log("Red pressed");
     this.matrix.addCommand('RED');
-    this.state.currentColor = "#ed0039";    
-  };
-  this.keyGreen.press = () => {
-    console.log("Green pressed");
-    this.matrix.addCommand('GREEN');
-    this.state.currentColor = "#7cfc00";    
+    this.state.setCurrentColor(this.state.colors[0]);
   };
   this.keyBlue.press = () => {
     console.log("blue pressed");
     this.matrix.addCommand('BLUE');
-    this.state.currentColor = "#44b5ff";    
+    this.state.setCurrentColor(this.state.colors[1]);    
+  };
+  this.keyGreen.press = () => {
+    console.log("Green pressed");
+    this.matrix.addCommand('GREEN');
+    this.state.setCurrentColor(this.state.colors[2]);
   };
   this.keyCustom.press = () => {
     console.log("Custom pressed");
     this.matrix.addCommand('CUSTOM COLOR');
-    this.state.currentColor = this.state.customColor;    
+    this.state.setCurrentColor(this.state.customColor);
   };
   this.keyRandom.press = () => {
     console.log("Random pressed");
