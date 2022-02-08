@@ -135,11 +135,11 @@ Matrix.prototype.addCommand = function (text) {
   command.x = 5;
   command.y = 25;
   this.addChild(command);
-  console.log(command);
+  // console.log(command);
   this.command = command
 };
 Matrix.prototype.deleteCommand = function (command) {
-  console.log('this.deleteCommand')
+  // console.log('this.deleteCommand')
   this.removeChild(command);
   command.destroy();
   this.command = null;
@@ -155,7 +155,7 @@ Matrix.prototype.addSentence = function (quote) {
     Math.floor((this.state.getNbColumns() - text.length) / 2) * (Char.SIZE / 2);
   sentence.y = (Math.floor(this.state.getNbRows() / 2)-1) * (Char.SIZE);
   this.addChild(sentence);
-  console.log(sentence);
+  // console.log(sentence);
   this.sentence = sentence;
 };
 

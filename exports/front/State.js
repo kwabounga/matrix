@@ -62,11 +62,11 @@ const State = (function () {
          * @returns {object} a random quote 
          */
         function getQuote(){
-            console.log(this.allQuotes)
+            // console.log(this.allQuotes)
             let nbQuotes = this.allQuotes.length;
             let rQuote = Math.floor(Math.random()*nbQuotes);
             let quote = this.allQuotes[rQuote];
-            console.log('getQuote', nbQuotes,rQuote,quote);
+            // console.log('getQuote', nbQuotes,rQuote,quote);
             return quote;
         }
         /**
@@ -78,7 +78,7 @@ const State = (function () {
                 return (q.quote + ' ' + q.author).length;
             }
             let quote = this.getQuote();
-            console.log(this.getNbColumns());
+            // console.log(this.getNbColumns());
             while(quoteLength(quote) > this.getNbColumns()){
                 quote = this.getQuote();
             }

@@ -36,8 +36,9 @@ Drop.prototype = Object.create(PIXI.Sprite.prototype);
  */
 Drop.prototype.update = function(){
     const me = this;
-    for (let i = 0; i < me.allChars.length; i++) {
-        allChars[i].update();
+    let l = me.allChars.length;
+    for (let i = 0; i < l; i++) {
+        if(me.allChars[i])me.allChars[i].update();
     }
     // this.allChars.forEach((char)=>{
     //     char.update();
@@ -57,7 +58,8 @@ Drop.prototype.getSize = function(){
  */
 Drop.prototype.forceDelete = function(){
     const me = this;
-    for (let i = 0; i < me.allChars.length; i++) {
+    let l = me.allChars.length;
+    for (let i = 0; i < l; i++) {
         const char = me.allChars[i]
         setTimeout(()=>{
             char.cycleLength = 0;

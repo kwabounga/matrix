@@ -6,7 +6,7 @@
    * @description matrix rain & quotes 
    * @version 1.0.2 
    * @see http://kwabounga.fr/matrix 
-   * @last_update Tue, 08 Feb 2022 06:56:47 GMT
+   * @last_update Tue, 08 Feb 2022 22:04:16 GMT
    * @licence ISC 
    * 
    */
@@ -120,7 +120,7 @@ Tools.ajaxGet = function(url, callback) {
     console.log(navigator.userAgent)
     let rg = new RegExp(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari/ig)
     let isMob = rg.test(navigator.userAgent)
-    console.log(isMob)
+    // console.log(isMob)
     return isMob;
   }
   
@@ -178,8 +178,9 @@ Sentence.prototype.createSentence = function(text, nbDropLeft = 5,isCommand = fa
  */
 Sentence.prototype.update = function(){
     const me = this;
-    for (let i = 0; i < me.allChars.length; i++) {
-        allChars[i].update();
+    let l = me.allChars.length;
+    for (let i = 0; i < l; i++) {
+        if(me.allChars[i])me.allChars[i].update();
     }
     // this.allChars.forEach((char)=>{
     //     char.update();
@@ -191,7 +192,7 @@ Sentence.prototype.update = function(){
  * @param {Char} char the character to delete
  */
 Sentence.prototype.removeChar = function(char){
-    console.log('this.removeChar')
+    // console.log('this.removeChar')
     var index = this.allChars.indexOf(char);
     if (index > -1) {
         this.allChars.splice(index, 1);
@@ -249,8 +250,9 @@ Drop.prototype = Object.create(PIXI.Sprite.prototype);
  */
 Drop.prototype.update = function(){
     const me = this;
-    for (let i = 0; i < me.allChars.length; i++) {
-        allChars[i].update();
+    let l = me.allChars.length;
+    for (let i = 0; i < l; i++) {
+        if(me.allChars[i])me.allChars[i].update();
     }
     // this.allChars.forEach((char)=>{
     //     char.update();
@@ -270,7 +272,8 @@ Drop.prototype.getSize = function(){
  */
 Drop.prototype.forceDelete = function(){
     const me = this;
-    for (let i = 0; i < me.allChars.length; i++) {
+    let l = me.allChars.length;
+    for (let i = 0; i < l; i++) {
         const char = me.allChars[i]
         setTimeout(()=>{
             char.cycleLength = 0;
@@ -387,11 +390,11 @@ const State = (function () {
          * @returns {object} a random quote 
          */
         function getQuote(){
-            console.log(this.allQuotes)
+            // console.log(this.allQuotes)
             let nbQuotes = this.allQuotes.length;
             let rQuote = Math.floor(Math.random()*nbQuotes);
             let quote = this.allQuotes[rQuote];
-            console.log('getQuote', nbQuotes,rQuote,quote);
+            // console.log('getQuote', nbQuotes,rQuote,quote);
             return quote;
         }
         /**
@@ -403,7 +406,7 @@ const State = (function () {
                 return (q.quote + ' ' + q.author).length;
             }
             let quote = this.getQuote();
-            console.log(this.getNbColumns());
+            // console.log(this.getNbColumns());
             while(quoteLength(quote) > this.getNbColumns()){
                 quote = this.getQuote();
             }
@@ -766,11 +769,11 @@ Matrix.prototype.addCommand = function (text) {
   command.x = 5;
   command.y = 25;
   this.addChild(command);
-  console.log(command);
+  // console.log(command);
   this.command = command
 };
 Matrix.prototype.deleteCommand = function (command) {
-  console.log('this.deleteCommand')
+  // console.log('this.deleteCommand')
   this.removeChild(command);
   command.destroy();
   this.command = null;
@@ -786,7 +789,7 @@ Matrix.prototype.addSentence = function (quote) {
     Math.floor((this.state.getNbColumns() - text.length) / 2) * (Char.SIZE / 2);
   sentence.y = (Math.floor(this.state.getNbRows() / 2)-1) * (Char.SIZE);
   this.addChild(sentence);
-  console.log(sentence);
+  // console.log(sentence);
   this.sentence = sentence;
 };
 
@@ -968,7 +971,8 @@ Main.prototype.spriteSheetLoaded = function () {
 // TESTING
 
 Main.prototype.addKeysEvents = function () {
-  console.log("adding key Events r, v, b, c, (Red, Blue, Green, Custom)");
+  console.log("Matrix controls:  r, v, b, c, (Red, Blue, Green, Custom)");
+  console.log(`use custom with ${location.origin + location.pathname}#ffa500`);
 
   this.keyRed = keyboard("r");
   this.keyGreen = keyboard("v");
@@ -1004,8 +1008,35 @@ Main.prototype.addKeysEvents = function () {
     this.matrix.addCommand(`RANDOM ${this.state.isRandom?'DEACTIVATED':'ACTIVATED'}`);
   };
 
+
+
+  
 }
 
+// onresize reloader
+function refresh() {
+  location.reload();
+}
+// onload starting point
+function init() {
+  let s = State.getInstance();
+  s.height = Tools.availableSize.height();
+  s.width = Tools.availableSize.width();
+  // console.log("init", s.width, s.height);
+  loadSound();
+  Tools.ajaxGet("./data/quotes.json", (data) => {
+    let d = JSON.parse(data).all;
+    var main = new Main(d);
+  });
+}
+// sounds register/loader
+function loadSound() {
+  createjs.Sound.registerSound("./assets/drop.wav", "drop");
+  createjs.Sound.registerSound("./assets/frap_1.wav", "frap_1");
+  createjs.Sound.registerSound("./assets/frap_2.wav", "frap_2");
+  createjs.Sound.registerSound("./assets/frap_3.wav", "frap_3");
+  createjs.Sound.registerSound("./assets/frap_4.wav", "frap_4");
+}
 
 
 /* ... end [Main.js] */

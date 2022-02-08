@@ -47,8 +47,9 @@ Sentence.prototype.createSentence = function(text, nbDropLeft = 5,isCommand = fa
  */
 Sentence.prototype.update = function(){
     const me = this;
-    for (let i = 0; i < me.allChars.length; i++) {
-        allChars[i].update();
+    let l = me.allChars.length;
+    for (let i = 0; i < l; i++) {
+        if(me.allChars[i])me.allChars[i].update();
     }
     // this.allChars.forEach((char)=>{
     //     char.update();
@@ -60,7 +61,7 @@ Sentence.prototype.update = function(){
  * @param {Char} char the character to delete
  */
 Sentence.prototype.removeChar = function(char){
-    console.log('this.removeChar')
+    // console.log('this.removeChar')
     var index = this.allChars.indexOf(char);
     if (index > -1) {
         this.allChars.splice(index, 1);

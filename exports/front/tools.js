@@ -54,7 +54,7 @@ Tools.ajaxGet = function(url, callback) {
     console.log(navigator.userAgent)
     let rg = new RegExp(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari/ig)
     let isMob = rg.test(navigator.userAgent)
-    console.log(isMob)
+    // console.log(isMob)
     return isMob;
   }
   

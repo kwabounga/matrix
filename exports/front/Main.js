@@ -68,7 +68,8 @@ Main.prototype.spriteSheetLoaded = function () {
 // TESTING
 
 Main.prototype.addKeysEvents = function () {
-  console.log("adding key Events r, v, b, c, (Red, Blue, Green, Custom)");
+  console.log("Matrix controls:  r, v, b, c, (Red, Blue, Green, Custom)");
+  console.log(`use custom with ${location.origin + location.pathname}#ffa500`);
 
   this.keyRed = keyboard("r");
   this.keyGreen = keyboard("v");
@@ -104,6 +105,33 @@ Main.prototype.addKeysEvents = function () {
     this.matrix.addCommand(`RANDOM ${this.state.isRandom?'DEACTIVATED':'ACTIVATED'}`);
   };
 
+
+
+  
 }
 
+// onresize reloader
+function refresh() {
+  location.reload();
+}
+// onload starting point
+function init() {
+  let s = State.getInstance();
+  s.height = Tools.availableSize.height();
+  s.width = Tools.availableSize.width();
+  // console.log("init", s.width, s.height);
+  loadSound();
+  Tools.ajaxGet("./data/quotes.json", (data) => {
+    let d = JSON.parse(data).all;
+    var main = new Main(d);
+  });
+}
+// sounds register/loader
+function loadSound() {
+  createjs.Sound.registerSound("./assets/drop.wav", "drop");
+  createjs.Sound.registerSound("./assets/frap_1.wav", "frap_1");
+  createjs.Sound.registerSound("./assets/frap_2.wav", "frap_2");
+  createjs.Sound.registerSound("./assets/frap_3.wav", "frap_3");
+  createjs.Sound.registerSound("./assets/frap_4.wav", "frap_4");
+}
 
