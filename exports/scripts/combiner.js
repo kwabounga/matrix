@@ -33,7 +33,7 @@ const formatInfos = function () {
    * @version ${npm.version} 
    * @see ${npm.homepage} 
    * @last_update ${(new Date()).toUTCString()}
-   * ${npm.license} 
+   * @licence ${npm.license} 
    * 
    */
   
@@ -64,7 +64,7 @@ console.log("\nDATA PREV");
 console.log(prev(fullFile));
 
 // construction of the path and name of the combined js file
-const binDir = path.join(__dirname, "../../public/bin/");
+const binDir = path.join(__dirname, data.output);
 let nfp = path.join(binDir, `${data.name}.js`);
 
 // create the destination folder if no exist

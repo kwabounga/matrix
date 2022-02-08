@@ -2,12 +2,12 @@
   /**
    * MATRIX
    * 
-   * @author  
-   * @description  
-   * @version 1.0.0 
-   * @see undefined 
-   * @last_update Mon, 07 Feb 2022 23:41:02 GMT
-   * ISC 
+   * @author kwa 
+   * @description matrix rain & quotes 
+   * @version 1.0.2 
+   * @see http://kwabounga.fr/matrix 
+   * @last_update Tue, 08 Feb 2022 06:56:47 GMT
+   * @licence ISC 
    * 
    */
   
@@ -177,9 +177,13 @@ Sentence.prototype.createSentence = function(text, nbDropLeft = 5,isCommand = fa
  * update the sentence display
  */
 Sentence.prototype.update = function(){
-    this.allChars.forEach((char)=>{
-        char.update();
-    })
+    const me = this;
+    for (let i = 0; i < me.allChars.length; i++) {
+        allChars[i].update();
+    }
+    // this.allChars.forEach((char)=>{
+    //     char.update();
+    // })
 }
 
 /**
@@ -246,8 +250,7 @@ Drop.prototype = Object.create(PIXI.Sprite.prototype);
 Drop.prototype.update = function(){
     const me = this;
     for (let i = 0; i < me.allChars.length; i++) {
-        const char = me.allChars[i];
-        char.update();
+        allChars[i].update();
     }
     // this.allChars.forEach((char)=>{
     //     char.update();
@@ -608,7 +611,7 @@ Char.prototype.update = function(){
       }
       
       let currentStateTint = `${this.state.currentColor}`.replace("#", "0x");
-    if(this._font.tint != "0xffffff" && this._font.tint != currentStateTint){
+    if(this._font.tint != currentStateTint && this._font.tint != "0xffffff" ){
       this.dirty = true;
       this._font.tint = currentStateTint;
     }
@@ -823,7 +826,7 @@ Matrix.prototype.deleteDrop = function (drop) {
  * and force no looping
  */
 Matrix.prototype.deleteForce = function () {
-    this.state.isLooping = false;
+  this.state.isLooping = false;
   for (let i = 0; i < this.rain.length; i++) {
     this.rain[i].forceDelete();
   }
@@ -843,7 +846,7 @@ Matrix.prototype.update = function () {
     this.rain[i].update();
   }
   this.colorCount++;
-  if (this.colorCount >= 500) {
+   if(this.colorCount >= 500) {
     this.colorCount = 0;
     if(!this.state.isRandom){
       this.state.getNewColor();
@@ -851,7 +854,7 @@ Matrix.prototype.update = function () {
   }
   this.glitchCount++;
   if (this.glitchCount >= this.glitchTrigger) {
-    this.glitchTrigger = Math.floor(Math.random() * 350) + 100;
+    this.glitchTrigger = Math.floor(Math.random() * 650) + 100;
     this.glitchCount = 0;
     this.updateGlitch();
     this.glitchFilter.enabled = true;

@@ -1,7 +1,7 @@
 {
   "name": "matrix",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.2",
+  "description": "matrix rain & quotes",
   "title": "Matrix",
   "main": "index.js",
   "directories": {
@@ -15,13 +15,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "kwa",
+  "homepage": "http://kwabounga.fr/matrix",
   "license": "ISC",
   "dependencies": {
     "google-closure-compiler": "^20220202.0.0",
     "pixi-filters": "^4.0.0"
   },
   "combiner": {
+    "output": "../../public/bin/",
     "name": "matrix",
     "files": [
       "../front/Keyboard.js",
