@@ -2,17 +2,36 @@
   "name": "matrix",
   "version": "1.0.0",
   "description": "",
+  "title": "Matrix",
   "main": "index.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
+    "clean": "node ./exports/scripts/clean.js",
+    "combine": "node ./exports/scripts/combiner.js",
+    "dev": "npm run clean && npm run combine && npm run minify && http-server",
+    "minify": "npx google-closure-compiler --js=./public/bin/%npm_package_combiner_name%.js --js_output_file=./public/bin/%npm_package_combiner_name%.min.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "google-closure-compiler": "^20220202.0.0",
     "pixi-filters": "^4.0.0"
+  },
+  "combiner": {
+    "name": "matrix",
+    "files": [
+      "../front/Keyboard.js",
+      "../front/tools.js",
+      "../front/Sentence.js",
+      "../front/Drop.js",
+      "../front/State.js",
+      "../front/Char.js",
+      "../front/Matrix.js",
+      "../front/Main.js"
+    ]
   }
 }

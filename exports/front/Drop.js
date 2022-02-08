@@ -35,9 +35,13 @@ Drop.prototype = Object.create(PIXI.Sprite.prototype);
  * update drop display
  */
 Drop.prototype.update = function(){
-    this.allChars.forEach((char)=>{
-        char.update();
-    })
+    const me = this;
+    for (let i = 0; i < me.allChars.length; i++) {
+        allChars[i].update();
+    }
+    // this.allChars.forEach((char)=>{
+    //     char.update();
+    // })
 }
 /**
  * 

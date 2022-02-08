@@ -46,9 +46,13 @@ Sentence.prototype.createSentence = function(text, nbDropLeft = 5,isCommand = fa
  * update the sentence display
  */
 Sentence.prototype.update = function(){
-    this.allChars.forEach((char)=>{
-        char.update();
-    })
+    const me = this;
+    for (let i = 0; i < me.allChars.length; i++) {
+        allChars[i].update();
+    }
+    // this.allChars.forEach((char)=>{
+    //     char.update();
+    // })
 }
 
 /**

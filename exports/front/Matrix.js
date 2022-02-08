@@ -195,7 +195,7 @@ Matrix.prototype.deleteDrop = function (drop) {
  * and force no looping
  */
 Matrix.prototype.deleteForce = function () {
-    this.state.isLooping = false;
+  this.state.isLooping = false;
   for (let i = 0; i < this.rain.length; i++) {
     this.rain[i].forceDelete();
   }
@@ -215,7 +215,7 @@ Matrix.prototype.update = function () {
     this.rain[i].update();
   }
   this.colorCount++;
-  if (this.colorCount >= 500) {
+   if(this.colorCount >= 500) {
     this.colorCount = 0;
     if(!this.state.isRandom){
       this.state.getNewColor();
@@ -223,7 +223,7 @@ Matrix.prototype.update = function () {
   }
   this.glitchCount++;
   if (this.glitchCount >= this.glitchTrigger) {
-    this.glitchTrigger = Math.floor(Math.random() * 350) + 100;
+    this.glitchTrigger = Math.floor(Math.random() * 650) + 100;
     this.glitchCount = 0;
     this.updateGlitch();
     this.glitchFilter.enabled = true;

@@ -142,7 +142,7 @@ Char.prototype.update = function(){
       }
       
       let currentStateTint = `${this.state.currentColor}`.replace("#", "0x");
-    if(this._font.tint != "0xffffff" && this._font.tint != currentStateTint){
+    if(this._font.tint != currentStateTint && this._font.tint != "0xffffff" ){
       this.dirty = true;
       this._font.tint = currentStateTint;
     }
